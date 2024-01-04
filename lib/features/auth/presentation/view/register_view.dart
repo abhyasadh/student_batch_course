@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_management_hive_api/features/batch/domain/entity/batch_entity.dart';
+import 'package:student_management_hive_api/features/batch/presentation/view_model/batch_view_model.dart';
+import 'package:student_management_hive_api/features/course/presentation/view_model/course_view_model.dart';
+
+import '../../../course/domain/entity/course_entity.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
@@ -25,8 +30,14 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   // final _passwordController = TextEditingController();
 
   bool isObscure = true;
+
+  BatchEntity? selectedBatch;
+  List<CourseEntity> _listCourseSelected = [];
+
   @override
   Widget build(BuildContext context) {
+    final batchState = ref.watch(batchViewModelProvider);
+    final courseState = ref.watch(courseViewModelProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
@@ -125,7 +136,22 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     }),
                   ),
                   _gap,
-                  // DropDown
+                  batchState.isLoading?
+                      const Center(child: CircularProgressIndicator(),):
+                      DropdownButtonFormField(
+                        hint: const Text('Select Batch'),
+                        items: batchState.batches
+                        .map((batch) => DropdownMenuItem<BatchEntity>(
+                          value: batch,
+                          child: Text(batch.batchName),
+                        ),).toList(),
+                        onChanged: (value){
+                          selectedBatch = value;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Select Batch',
+                        ),
+                      ),
                   _gap,
                   // Multi Checkbox
                   _gap,
