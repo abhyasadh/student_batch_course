@@ -19,8 +19,7 @@ class BatchRemoteRepoImpl implements IBatchRepository{
 
   @override
   Future<Either<Failure, bool>> addBatch(BatchEntity batch) {
-    // TODO: implement addBatch
-    throw UnimplementedError();
+    return batchRemoteDataSource.addBatch(batch);
   }
 
   @override

@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_management_hive_api/core/failure/failure.dart';
-import 'package:student_management_hive_api/features/auth/domain/entity/auth_entity.dart';
 import 'package:student_management_hive_api/features/course/data/data_source/course_remote_data_source.dart';
 import 'package:student_management_hive_api/features/course/domain/entity/course_entity.dart';
 import 'package:student_management_hive_api/features/course/domain/repository/course_repository.dart';
@@ -19,13 +18,12 @@ class CourseRemoteRepoImpl implements ICourseRepository{
 
   @override
   Future<Either<Failure, bool>> addCourse(CourseEntity course) {
-    // TODO: implement addCourse
-    throw UnimplementedError();
+    return courseRemoteDataSource.addCourse(course);
   }
 
   @override
   Future<Either<Failure, List<CourseEntity>>> getAllCourses() {
-    return courseRemoteDataSource.getAllCoursees();
+    return courseRemoteDataSource.getAllCourses();
   }
 
   @override

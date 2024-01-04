@@ -44,4 +44,24 @@ class BatchRemoteDataSource{
       return Left(Failure(error: e.response?.data['message']));
     }
   }
+
+  Future<Either<Failure, bool>> addBatch(BatchEntity batch) async {
+    try{
+      BatchAPIModel batchAPIModel = BatchAPIModel.fromEntity(batch);
+      var response = await dio.post(ApiEndpoints.createBatch,
+      data: batchAPIModel.toJson());
+      if (response.statusCode==201){
+        return const Right(true);
+      } else {
+        return Left(
+          Failure(
+            error: response.statusMessage.toString(),
+            statusCode: response.statusCode.toString()
+          )
+        );
+      }
+    } on DioException catch (e) {
+      return Left(Failure(error: e.response?.data['message']));
+    }
+  }
 }
