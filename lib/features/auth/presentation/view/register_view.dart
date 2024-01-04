@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:student_management_hive_api/features/batch/domain/entity/batch_entity.dart';
 import 'package:student_management_hive_api/features/batch/presentation/view_model/batch_view_model.dart';
 import 'package:student_management_hive_api/features/course/presentation/view_model/course_view_model.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 
 import '../../../course/domain/entity/course_entity.dart';
 
@@ -153,7 +156,34 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         ),
                       ),
                   _gap,
-                  // Multi Checkbox
+                      courseState.isLoading?
+                      const Center(child: CircularProgressIndicator(),):
+                      MultiSelectDialogField(
+                        title: const Text('Select course(s)'),
+                        items: courseState.courses.map((e) => MultiSelectItem(
+                          e,
+                          e.courseName,
+                        ),
+                        ).toList(),
+                        listType: MultiSelectListType.CHIP,
+                        buttonText: const Text('Select course(s)'),
+                        buttonIcon: const Icon(Icons.search),
+                        onConfirm: (values){
+                          _listCourseSelected.clear();
+                          _listCourseSelected.addAll(values);
+                        },
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(5)
+                        ),
+                        validator: ((value){
+                          if (value==null || value.isEmpty){
+
+                          }
+                        }),
+                      ),
                   _gap,
                   TextFormField(
                     controller: _usernameController,
